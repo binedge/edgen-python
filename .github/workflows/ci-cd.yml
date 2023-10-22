@@ -1,0 +1,26 @@
+on:
+  push:
+    branches:
+      - main
+jobs:
+  pypi-publish:
+    name: Release
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/edgen
+    permissions:
+      id-token: write
+    steps:
+    - name: Install Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.11.3
+    - name: Checkout Code
+      uses: actions/checkout@v2
+    - name: Build Artifacts
+      run: |
+        curl -sSL https://install.python-poetry.org | python3 -
+        poetry build
+    - name: Publish to PyPi
+      uses: pypa/gh-action-pypi-publish@release/v1
